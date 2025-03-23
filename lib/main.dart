@@ -30,21 +30,107 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home:Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Tarefas'),
+        ),
+        body: ListView(
+          children: [
+            Task("nome 01"),
+            Task("nome 02"),
+            Task(
+                "nome ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd 03"),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(onPressed: () {}),
+      ),
+    );
+  }
+}
+
+class Task extends StatefulWidget {
+  final String name;
+  const Task(this.name, {super.key});
+
+  @override
+  State<Task> createState() => _TaskState();
+}
+
+class _TaskState extends State<Task> {
+  int nivel = 0;
+
+  void aumentarNivel() {
+    setState(() {
+      nivel++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      child: Stack(
         children: [
-          Container(color: Colors.red, width: 100, height: 100,),
-          Container(color: Colors.blue, width: 50, height: 50,),
           Container(
-            color: Colors.yellow, 
-            width: 50, 
-            height: 50, 
-            child: Text('Hello', style: TextStyle(color: Colors.black, fontSize: 12),textAlign: TextAlign.center),),
-          ElevatedButton(
-            onPressed: (){ 
-              print('Você apertou o botão');
-            }, 
-            child: Text('Aperte o botão'))
+            color: Colors.blue,
+            height: 140,
+          ),
+          Column(
+            children: [
+              Container(
+                color: Colors.white,
+                height: 100,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      color: Colors.black26,
+                      width: 72,
+                      height: 100,
+                    ),
+                    Container(
+                      width: 200,
+                      child: Text(
+                        widget.name,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          aumentarNivel();
+                        },
+                        child: Icon(Icons.arrow_drop_up))
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 200,
+                      child: LinearProgressIndicator(
+                        color: Colors.white,
+                        value: nivel / 10,
+                      )
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                    "Nivel: $nivel", 
+                    style:  TextStyle(color:Colors.white,fontSize: 16),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ],
       ),
     );
